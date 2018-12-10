@@ -1,8 +1,6 @@
 ## Backblaze B2 SDK for PHP
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Latest Version](https://img.shields.io/github/release/cwhite92/b2-sdk-php.svg?style=flat-square)](https://github.com/cwhite92/b2-sdk-php/releases)
-[![SensioLabs Rating](https://img.shields.io/sensiolabs/i/d5e44d75-84d2-40c7-b0d4-7f628429e139.svg?style=flat-square)](https://insight.sensiolabs.com/projects/d5e44d75-84d2-40c7-b0d4-7f628429e139)
-[![Build Status](https://img.shields.io/travis/cwhite92/b2-sdk-php.svg?style=flat-square)](https://travis-ci.org/cwhite92/b2-sdk-php)
+This is a fork of [Chris White's](https://github.com/cwhite92/b2-sdk-php) B2 PHP Client.
+
 
 `b2-sdk-php` is a client library for working with Backblaze's B2 storage service. It aims to make using the service as
 easy as possible by exposing a clear API and taking influence from other SDKs that you may be familiar with.
@@ -12,8 +10,8 @@ easy as possible by exposing a clear API and taking influence from other SDKs th
 This is just a short example, full examples to come on the wiki.
 
 ```php
-use ChrisWhite\B2\Client;
-use ChrisWhite\B2\Bucket;
+use ILAB\B2\Client;
+use ILAB\B2\Bucket;
 
 $client = new Client('accountId', 'applicationKey');
 
