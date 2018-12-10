@@ -77,7 +77,7 @@ $fileList = $client->listFiles([
 Installation is via Composer:
 
 ```bash
-$ composer require cwhite92/b2-sdk-php
+$ composer require ilab/b2-sdk-php
 ```
 
 ## Tests
