@@ -1,6 +1,6 @@
 <?php
 
-namespace ChrisWhite\B2;
+namespace ILAB\B2;
 
 class File
 {

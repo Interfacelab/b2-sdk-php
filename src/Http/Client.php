@@ -1,14 +1,14 @@
 <?php
 
-namespace ChrisWhite\B2\Http;
+namespace ILAB\B2\Http;
 
-use ChrisWhite\B2\ErrorHandler;
+use ILAB\B2\ErrorHandler;
 use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Client wrapper around Guzzle.
  *
- * @package ChrisWhite\B2\Http
+ * @package ILAB\B2\Http
  */
 class Client extends GuzzleClient
 {
