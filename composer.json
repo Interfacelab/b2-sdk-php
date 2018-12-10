@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ChrisWhite\\B2\\": "src/"
+            "ILAB\\B2\\": "src/"
         }
     },
     "autoload-dev": {

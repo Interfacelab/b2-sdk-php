@@ -21,11 +21,14 @@ class Client
     /**
      * Client constructor. Accepts the account ID, application key and an optional array of options.
      *
-     * @param $accountId
-     * @param $applicationKey
+     * @param string $applicationKeyId
+     * @param string $applicationKey
      * @param array $options
+     * @param AuthCacheInterface $authCache
+     *
+     * @throws \Exception
      */
-    public function __construct($applicationKeyId, $applicationKey, array $options = [])
+    public function __construct($applicationKeyId, $applicationKey, array $options = [], $authCache = null)
     {
         $this->applicationKeyId = $applicationKeyId;
         $this->applicationKey = $applicationKey;
@@ -36,7 +39,7 @@ class Client
             $this->client = new HttpClient(['exceptions' => false]);
         }
 
-        $this->authorizeAccount();
+        $this->authorizeAccount($authCache);
     }
 
     /**
@@ -412,20 +415,36 @@ class Client
     /**
      * Authorize the B2 account in order to get an auth token and API/download URLs.
      *
+     * @param AuthCacheInterface $authCache
      * @throws \Exception
      */
-    protected function authorizeAccount()
+    protected function authorizeAccount($authCache = null)
     {
-        $response = $this->client->request('GET', 'https://api.backblazeb2.com/b2api/v2/b2_authorize_account', [
-            'headers' => [
-                'Authorization' => 'Basic ' . base64_encode($this->applicationKeyId . ":" . $this->applicationKey)
-            ]
-        ]);
+        $auth = base64_encode($this->applicationKeyId . ":" . $this->applicationKey);
 
-        $this->accountId = $response['accountId'];
-        $this->authToken = $response['authorizationToken'];
-        $this->apiUrl = $response['apiUrl'].'/b2api/v2';
-        $this->downloadUrl = $response['downloadUrl'];
+        $authData = [];
+        if (!empty($authCache)) {
+            $authData = $authCache->cachedB2Auth($auth);
+        }
+
+        if (empty($authData)) {
+            $authData = $this->client->request('GET', 'https://api.backblazeb2.com/b2api/v2/b2_authorize_account', [
+                'headers' => [
+                    'Authorization' => 'Basic ' . $auth
+                ]
+            ]);
+
+            if (!empty($authData) && !empty($authCache)) {
+                $authCache->cacheB2Auth($auth, $authData);
+            }
+        }
+
+        if (!empty($authData)) {
+            $this->accountId = $authData['accountId'];
+            $this->authToken = $authData['authorizationToken'];
+            $this->apiUrl = $authData['apiUrl'].'/b2api/v2';
+            $this->downloadUrl = $authData['downloadUrl'];
+        }
     }
 
     /**
