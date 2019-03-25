@@ -330,7 +330,7 @@ class Client
 											$file['fileInfo'],
 											$file['bucketId'],
 											$file['action'],
-											$file['uploadedTimestamp']
+											$file['uploadTimestamp']
 										);
                 }
             }
