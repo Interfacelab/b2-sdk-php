@@ -471,17 +471,23 @@ class Client
      * Maps the provided bucket name to the appropriate bucket ID.
      *
      * @param $name
-     * @return null
+     * @return mixed
      */
     protected function getBucketIdFromName($name)
     {
-        $buckets = $this->listBuckets();
+        $response = $this->client->request('POST', $this->apiUrl.'/b2_list_buckets', [
+						'headers' => [
+								'Authorization' => $this->authToken,
+						],
+						'json' => [
+								'accountId'  => $this->accountId,
+								'bucketName' => $name
+						]
+				]);
 
-        foreach ($buckets as $bucket) {
-            if ($bucket->getName() === $name) {
-                return $bucket->getId();
-            }
-        }
+				if (!empty($response['buckets'])) {
+					return $response['buckets'][0]['bucketId'];
+				}
 
         return null;
     }
@@ -490,17 +496,23 @@ class Client
      * Maps the provided bucket ID to the appropriate bucket name.
      *
      * @param $id
-     * @return null
+     * @return mixed
      */
     protected function getBucketNameFromId($id)
     {
-        $buckets = $this->listBuckets();
+				$response = $this->client->request('POST', $this->apiUrl.'/b2_list_buckets', [
+						'headers' => [
+								'Authorization' => $this->authToken,
+						],
+						'json' => [
+								'accountId'  => $this->accountId,
+								'bucketId' => $id
+						]
+				]);
 
-        foreach ($buckets as $bucket) {
-            if ($bucket->getId() === $id) {
-                return $bucket->getName();
-            }
-        }
+				if (!empty($response['buckets'])) {
+					return $response['buckets'][0]['bucketName'];
+				}
 
         return null;
     }
